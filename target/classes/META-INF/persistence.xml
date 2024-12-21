@@ -39,7 +39,7 @@
 
 			<!-- Paramètres supplémentaires -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- `update` pour mettre à jour le schéma de la base de données, ou `create` pour créer
 			à nouveau -->
 		</properties>

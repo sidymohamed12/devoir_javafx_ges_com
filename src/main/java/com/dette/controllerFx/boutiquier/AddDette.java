@@ -12,6 +12,7 @@ import com.dette.entities.Dette;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -23,6 +24,14 @@ import javafx.util.StringConverter;
 import javafx.scene.control.Alert.AlertType;
 
 public class AddDette extends ini {
+    @FXML
+    private TextField searchClient;
+
+    @FXML
+    private TextField clientfield;
+
+    @FXML
+    private Button submitSearchClient;
 
     @FXML
     private ComboBox<Article> selectArticle;
@@ -78,6 +87,7 @@ public class AddDette extends ini {
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("montantVendu"));
         loadClients();
         loadArticles();
+        submitSearchClient.setOnAction(event -> clientSearch(event));
         buttonAjoutArticle.setOnAction(event -> addArticleToDette());
         submitDette.setOnAction(event -> submitDette());
     }
@@ -116,6 +126,24 @@ public class AddDette extends ini {
 
         });
         selectClient.setItems(clients);
+    }
+
+    private void clientSearch(ActionEvent event) {
+        String rechercheClient = searchClient.getText();
+        isEmpty(rechercheClient, "CHAMP VIDE", "veuiller saisir le numero de téléphone du client");
+
+        try {
+            client = clientService.getBy(rechercheClient);
+
+            isNull(client, " ERREUR RECHERCHE", "aucun client trouvé avec ce numero");
+
+            clientfield.setText(client.getSurnom() + " | " + client.getTelephone() + " | " + client.getAdresse());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Database Error", "Client" + e.getMessage());
+        }
+
     }
 
     private void addArticleToDette() {
